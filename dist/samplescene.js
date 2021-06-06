@@ -90,16 +90,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./src/components/MainMulticamera.js":
-/*!*******************************************!*\
-  !*** ./src/components/MainMulticamera.js ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ MainMulticamera)\n/* harmony export */ });\n/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three */ \"./node_modules/three/build/three.module.js\");\n/* harmony import */ var _Renderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Renderer */ \"./src/components/Renderer.js\");\n/* harmony import */ var _Camera__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Camera */ \"./src/components/Camera.js\");\n/* harmony import */ var _Ico__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Ico */ \"./src/components/Ico.js\");\n/* harmony import */ var three_examples_jsm_libs_stats_module_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three/examples/jsm/libs/stats.module.js */ \"./node_modules/three/examples/jsm/libs/stats.module.js\");\n\r\n\r\n\r\n\r\n\r\n\r\nclass MainMulticamera {\r\n    constructor(container) {\r\n\r\n        this.scene = new three__WEBPACK_IMPORTED_MODULE_3__.Scene();\r\n        this.renderer = new _Renderer__WEBPACK_IMPORTED_MODULE_0__.default(container);\r\n        this.camera = new _Camera__WEBPACK_IMPORTED_MODULE_1__.default(this.renderer.threeRenderer);\r\n\r\n        const gridHelper = new three__WEBPACK_IMPORTED_MODULE_3__.GridHelper(1000, 30);\r\n        this.scene.add(gridHelper);\r\n\r\n        this.stats = new three_examples_jsm_libs_stats_module_js__WEBPACK_IMPORTED_MODULE_4__.default();\r\n        this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb\r\n\r\n        container.appendChild(this.stats.dom);\r\n\r\n        // ta funkcja umożliwia dodawania kolejnych kamer\r\n        this.renderer.autoClear = false\r\n\r\n        // camera 1\r\n        this.camera1 = new _Camera__WEBPACK_IMPORTED_MODULE_1__.default(30, window.innerWidth / 2, window.innerHeight / 2);\r\n        this.camera1.position.set(50, 0, 50)\r\n        this.camera1.lookAt(new three__WEBPACK_IMPORTED_MODULE_3__.Vector3(0, 0, 0));\r\n\r\n        // camera 2\r\n        this.camera2 = new _Camera__WEBPACK_IMPORTED_MODULE_1__.default(30, window.innerWidth / 2, window.innerHeight / 2);\r\n        this.camera2.position.set(0, 200, 0)\r\n        this.camera2.lookAt(new three__WEBPACK_IMPORTED_MODULE_3__.Vector3(0, 0, 0));\r\n\r\n        // camera 3\r\n        this.camera3 = new _Camera__WEBPACK_IMPORTED_MODULE_1__.default(30, window.innerWidth / 2, window.innerHeight / 2);\r\n        this.camera3.position.set(50, 100, 50)\r\n        this.camera3.lookAt(new three__WEBPACK_IMPORTED_MODULE_3__.Vector3(0, 0, 0));\r\n        // camera 4      \r\n        this.camera4 = new _Camera__WEBPACK_IMPORTED_MODULE_1__.default(30, window.innerWidth / 2, window.innerHeight / 2);\r\n        this.camera4.position.set(0, -50, 0)\r\n        this.camera4.lookAt(new three__WEBPACK_IMPORTED_MODULE_3__.Vector3(0, 0, 0));\r\n\r\n\r\n        this.ico = new _Ico__WEBPACK_IMPORTED_MODULE_2__.default()\r\n        this.scene.add(this.ico)\r\n\r\n        this.render();\r\n\r\n    }\r\n\r\n    render() {\r\n\r\n        this.renderer.clear()\r\n        this.stats.begin()\r\n\r\n        this.renderer.setViewport(0, innerHeight / 2, innerWidth / 2, innerHeight / 2);\r\n        this.renderer.render(this.scene, this.camera1);\r\n        this.renderer.setViewport(innerWidth / 2, innerHeight / 2, innerWidth / 2, innerHeight / 2);\r\n        this.renderer.render(this.scene, this.camera2);\r\n        this.renderer.setViewport(0, 0, innerWidth / 2, innerHeight / 2);\r\n        this.renderer.render(this.scene, this.camera3);\r\n        this.renderer.setViewport(innerWidth / 2, 0, innerWidth / 2, innerHeight / 2);\r\n        this.renderer.render(this.scene, this.camera4);\r\n        // kolejne viewporty dla kolejnych kamer\r\n\r\n        this.ico.update() // obrót ico\r\n        this.stats.end()\r\n        requestAnimationFrame(this.render.bind(this));\r\n    }\r\n}\r\n\r\n\n\n//# sourceURL=webpack://test/./src/components/MainMulticamera.js?");
-
-/***/ }),
-
 /***/ "./src/components/Renderer.js":
 /*!************************************!*\
   !*** ./src/components/Renderer.js ***!
@@ -110,13 +100,23 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./src/multicamera.js":
+/***/ "./src/components/SampleScene.js":
+/*!***************************************!*\
+  !*** ./src/components/SampleScene.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ SampleScene)\n/* harmony export */ });\n/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three */ \"./node_modules/three/build/three.module.js\");\n/* harmony import */ var _Renderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Renderer */ \"./src/components/Renderer.js\");\n/* harmony import */ var _Camera__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Camera */ \"./src/components/Camera.js\");\n/* harmony import */ var _Ico__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Ico */ \"./src/components/Ico.js\");\n/* harmony import */ var three_examples_jsm_libs_stats_module_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three/examples/jsm/libs/stats.module.js */ \"./node_modules/three/examples/jsm/libs/stats.module.js\");\n\r\n\r\n\r\n\r\n\r\nclass SampleScene {\r\n    constructor(container) {\r\n\r\n        this.scene = new three__WEBPACK_IMPORTED_MODULE_3__.Scene();\r\n        this.renderer = new _Renderer__WEBPACK_IMPORTED_MODULE_0__.default(container);\r\n\r\n        this.stats = new three_examples_jsm_libs_stats_module_js__WEBPACK_IMPORTED_MODULE_4__.default();\r\n        this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb\r\n        container.appendChild(this.stats.dom);\r\n\r\n        //this.renderer.autoClear = false\r\n\r\n        // camera 1\r\n        this.camera1 = new _Camera__WEBPACK_IMPORTED_MODULE_1__.default(30, window.innerWidth / 2, window.innerHeight / 2);\r\n        this.camera1.position.set(500, 500, 500)\r\n        this.camera1.lookAt(new three__WEBPACK_IMPORTED_MODULE_3__.Vector3(0, 0, 0));\r\n\r\n        this.ico = new _Ico__WEBPACK_IMPORTED_MODULE_2__.default()\r\n        this.scene.add(this.ico)\r\n\r\n        console.log(this.scene)\r\n\r\n        this.plane = new three__WEBPACK_IMPORTED_MODULE_3__.Plane(this.scene)\r\n\r\n        this.render();\r\n\r\n    }\r\n\r\n    render() {\r\n\r\n        this.renderer.clear()\r\n        this.stats.begin()\r\n\r\n        this.renderer.render(this.scene, this.camera1);\r\n\r\n        this.ico.update() // obrót ico\r\n        this.stats.end()\r\n        requestAnimationFrame(this.render.bind(this));\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n\n\n//# sourceURL=webpack://test/./src/components/SampleScene.js?");
+
+/***/ }),
+
+/***/ "./src/samplescene.js":
 /*!****************************!*\
-  !*** ./src/multicamera.js ***!
+  !*** ./src/samplescene.js ***!
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_MainMulticamera__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/MainMulticamera */ \"./src/components/MainMulticamera.js\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\r\n\r\nfunction init() {\r\n    //div\r\n    const container = document.getElementById('root');\r\n    //main class\r\n    new _components_MainMulticamera__WEBPACK_IMPORTED_MODULE_0__.default(container);\r\n}\r\n\r\ninit();\n\n//# sourceURL=webpack://test/./src/multicamera.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_SampleScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/SampleScene */ \"./src/components/SampleScene.js\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\r\n\r\nfunction init() {\r\n    //div\r\n    const container = document.getElementById('root');\r\n    //main class\r\n    new _components_SampleScene__WEBPACK_IMPORTED_MODULE_0__.default(container);\r\n}\r\n\r\ninit();\n\n//# sourceURL=webpack://test/./src/samplescene.js?");
 
 /***/ })
 
@@ -192,7 +192,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _com
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/multicamera.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/samplescene.js");
 /******/ 	
 /******/ })()
 ;

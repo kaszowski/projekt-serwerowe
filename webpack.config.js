@@ -3,6 +3,7 @@ module.exports = {
     entry: {
         multicamera: "./src/multicamera.js",
         particles: "./src/particles.js",
+        samplescene: "./src/samplescene.js",
     },
     output: {
         filename: '[name].js',
@@ -29,6 +30,14 @@ module.exports = {
             title: "particles",
             template: './src/public/index.html',
             chunks: ['particles'],
+
+        }),
+        new HtmlWebpackPlugin({
+            hash: true,
+            filename: './samplescene.html',
+            title: "samplescene",
+            template: './src/public/index.html',
+            chunks: ['samplescene'],
 
         }),
     ],
