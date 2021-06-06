@@ -12,8 +12,11 @@ export default class Ico extends Mesh {
         this.scale.set(5, 5, 5)
     }
     // obrót
-    update() {
+    update1() {
         this.rotation.y += 0.1
+    }
+    update2() {
+        this.position.x += 0.1
     }
 
 }

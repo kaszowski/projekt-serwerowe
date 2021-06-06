@@ -11,13 +11,13 @@ import floorTex from "./assets/floor.png"
 
 export default class Plane {
 
-    constructor(scene) {
-        this.planebase = new PlaneGeometry(250, 250);
+    constructor(scene, sizeX, sizeZ, posX, posZ) {
+        this.planebase = new PlaneGeometry(sizeX, sizeZ);
 
         this.texture = new TextureLoader().load(floorTex)
         this.texture.wrapS = RepeatWrapping
         this.texture.wrapT = RepeatWrapping
-        this.texture.repeat.set(10, 10)
+        this.texture.repeat.set(sizeX / 20, sizeZ / 20)
 
         this.floortexture = new MeshPhongMaterial({
             specular: 0xffffff,
@@ -31,6 +31,14 @@ export default class Plane {
         this.planemesh.rotation.x = 1 / 2 * Math.PI
         //this.plane.receiveShadow = true
 
+        this.setPosition(posX + (sizeX / 2), posZ + (sizeZ / 2))
+
+        scene.add(this.planemesh)
+    }
+    setPosition(x, z) {
+        this.planemesh.position.set(x, 0, z)
+    }
+    addToScene(scene) {
         scene.add(this.planemesh)
     }
 }
