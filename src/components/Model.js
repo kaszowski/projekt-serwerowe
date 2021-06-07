@@ -1,4 +1,5 @@
 import { MD2Loader } from './MD2Loader';
+import { FBXLoader } from './FBXLoader'
 import { Mesh, TextureLoader, MeshPhongMaterial } from "three"
 import marioTex from "./assets/mario/Luigi.png"
 

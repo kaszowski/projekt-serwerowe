@@ -1,5 +1,6 @@
 export default {
-        rotateLeft: false,
-        rotateRight: false,
-        moveForward: false
-    }
+    moveLeft: false,
+    moveRight: false,
+    moveForward: false,
+    moveBack: false
+}

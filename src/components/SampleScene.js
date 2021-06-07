@@ -1,10 +1,15 @@
 import { Scene, Vector3, GridHelper } from 'three';
 import Renderer from './Renderer';
+import Config from "./Config";
 import Camera from './Camera';
 import Ico from './Ico';
 import CustomAmbientLight from "./CustomAmbientLight"
 import Plane from "./Plane"
 import Stats from 'three/examples/jsm/libs/stats.module.js';
+import Keyboard from './Keyboard'
+//import FBXModel from './FBXModel'
+
+
 export default class SampleScene {
     constructor(container) {
 
@@ -12,17 +17,15 @@ export default class SampleScene {
         this.renderer = new Renderer(container);
 
         const gridHelper = new GridHelper(1000, 100);
+        gridHelper.position.y -= 50
         this.scene.add(gridHelper);
 
         this.stats = new Stats();
         this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb
         container.appendChild(this.stats.dom);
 
-        //this.renderer.autoClear = false
-
-        // camera 1
         this.camera1 = new Camera(30, window.innerWidth / 2, window.innerHeight / 2);
-        this.camera1.position.set(0, 250, 500)
+        this.camera1.position.set(0, 100, 100)
         this.camera1.lookAt(new Vector3(0, 0, 0))
 
         this.ico = new Ico()
@@ -39,7 +42,9 @@ export default class SampleScene {
         this.level1.floor.push(new Plane(this.scene, 20, 20, 120, 60))
         this.level1.floor.push(new Plane(this.scene, 20, 140, 140, 0))
 
-        this.light = new CustomAmbientLight(this.scene, "0xffffff", 2)
+        this.light = new CustomAmbientLight(this.scene, 0xffffff, 2)
+
+        this.keyboard = new Keyboard(window);
 
         console.log(this.scene)
 
@@ -52,11 +57,24 @@ export default class SampleScene {
         this.renderer.clear()
         this.stats.begin()
 
-        this.camera1.lookAt(new Vector3(this.ico.position.x, this.ico.position.y, this.ico.position.z))
-        this.camera1.position.set(this.ico.position.x, this.ico.position.y + 250, this.ico.position.z + 500)
+        if (this.ico) {
+            if (Config.moveForward) {
+                this.ico.moveForward()
+            }
+            if (Config.moveBack) {
+                this.ico.moveBack()
+            }
+            if (Config.moveRight) {
+                this.ico.moveRight()
+            }
+            if (Config.moveLeft) {
+                this.ico.moveLeft()
+            }
+        }
 
-        this.ico.update1()
-        //this.ico.update2()
+        this.camera1.lookAt(new Vector3(this.ico.position.x, this.ico.position.y, this.ico.position.z))
+        this.camera1.position.set(this.ico.position.x, this.ico.position.y + 100, this.ico.position.z + 100)
+
         this.stats.end()
         this.renderer.render(this.scene, this.camera1);
         requestAnimationFrame(this.render.bind(this));

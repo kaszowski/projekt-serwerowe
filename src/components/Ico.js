@@ -9,14 +9,20 @@ export default class Ico extends Mesh {
 
     constructor() {
         super(new IcosahedronGeometry(), new MeshNormalMaterial({ side: DoubleSide }))
-        this.scale.set(5, 5, 5)
+        this.scale.set(2, 2, 2)
+        this.position.set(0, 2.5, 0)
     }
     // obrót
-    update1() {
-        this.rotation.y += 0.1
+    moveLeft() {
+        this.position.x -= 0.5
     }
-    update2() {
-        this.position.x += 0.1
+    moveRight() {
+        this.position.x += 0.5
     }
-
+    moveForward() {
+        this.position.z -= 0.5
+    }
+    moveBack() {
+        this.position.z += 0.5
+    }
 }

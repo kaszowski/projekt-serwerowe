@@ -17,7 +17,7 @@ export default class Plane {
         this.texture = new TextureLoader().load(floorTex)
         this.texture.wrapS = RepeatWrapping
         this.texture.wrapT = RepeatWrapping
-        this.texture.repeat.set(sizeX / 20, sizeZ / 20)
+        this.texture.repeat.set(sizeX / 10, sizeZ / 10)
 
         this.floortexture = new MeshPhongMaterial({
             specular: 0xffffff,
