@@ -1,7 +1,5 @@
 import { MD2Loader } from './MD2Loader';
-import { FBXLoader } from './FBXLoader'
 import { Mesh, TextureLoader, MeshPhongMaterial } from "three"
-import marioTex from "./assets/mario/Luigi.png"
 
 export default class Model {
     constructor(scene, manager) {
@@ -18,21 +16,14 @@ export default class Model {
         new MD2Loader(this.manager).load(
             path,
             geometry => {
-
                 this.geometry = geometry;
-
                 this.mesh = new Mesh(geometry, new MeshPhongMaterial({
                     map: new TextureLoader().load(texture), // dowolny plik png, jpg
                     morphTargets: true // animowanie materiału modelu
                 }))
-
-                this.scene.add(this.mesh);
-                console.log(this.geometry.animations) // tu powinny być widoczne animacje
-
+                // console.log(this.geometry.animations) // tu powinny być widoczne animacje
             },
-
         );
-
     }
 
     unload() {

@@ -36,7 +36,7 @@ export default class Keyboard {
 
 
         }
-        console.log('onKeyChange', event.keyCode)
+        // console.log('onKeyChange', event.keyCode)
     }
 
     onKeyDown(event) {

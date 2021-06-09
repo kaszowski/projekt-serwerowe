@@ -40,5 +40,6 @@ export default class Plane {
     }
     addToScene(scene) {
         scene.add(this.planemesh)
+        console.log(this.planemesh)
     }
 }
