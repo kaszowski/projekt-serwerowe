@@ -240,13 +240,13 @@ eval("module.exports = __webpack_require__.p + \"9852f0c1c6907e3bb0d3.md2\";\n\n
 
 /***/ }),
 
-/***/ "./src/samplescene.js":
-/*!****************************!*\
-  !*** ./src/samplescene.js ***!
-  \****************************/
+/***/ "./src/maingame.js":
+/*!*************************!*\
+  !*** ./src/maingame.js ***!
+  \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_SampleScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/SampleScene */ \"./src/components/SampleScene.js\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\r\n\r\n\r\nfunction init() {\r\n    //div\r\n    const container = document.getElementById('root');\r\n    //main class\r\n    new _components_SampleScene__WEBPACK_IMPORTED_MODULE_0__.default(container);\r\n}\r\n\r\ninit();\n\n//# sourceURL=webpack://test/./src/samplescene.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _components_SampleScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/SampleScene */ \"./src/components/SampleScene.js\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\r\n\r\n\r\nfunction init() {\r\n    //div\r\n    const container = document.getElementById('root');\r\n    //main class\r\n    new _components_SampleScene__WEBPACK_IMPORTED_MODULE_0__.default(container);\r\n}\r\n\r\ninit();\n\n//# sourceURL=webpack://test/./src/maingame.js?");
 
 /***/ })
 
@@ -346,7 +346,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _com
 /******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
 /******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
 /******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
-/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 		__webpack_require__.p = scriptUrl + "../";
 /******/ 	})();
 /******/ 	
 /************************************************************************/
@@ -354,7 +354,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _com
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/samplescene.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/maingame.js");
 /******/ 	
 /******/ })()
 ;

@@ -1,12 +1,12 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: {
-        multicamera: "./src/multicamera.js",
-        particles: "./src/particles.js",
-        samplescene: "./src/samplescene.js",
+        // multicamera: "./src/multicamera.js",
+        // particles: "./src/particles.js",
+        maingame: "./src/maingame.js",
     },
     output: {
-        filename: '[name].js',
+        filename: 'js/[name].js',
     },
     mode: 'development', // none, development, production
     devServer: {
@@ -16,28 +16,28 @@ module.exports = {
         hot: true
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            hash: true,
-            filename: './multicamera.html',
-            title: "multikamera",
-            template: './src/public/index.html',
-            chunks: ['multicamera'],
+        // new HtmlWebpackPlugin({
+        //     hash: true,
+        //     filename: './multicamera.html',
+        //     title: "multikamera",
+        //     template: './src/public/index.html',
+        //     chunks: ['multicamera'],
 
-        }),
-        new HtmlWebpackPlugin({
-            hash: true,
-            filename: './particles.html',
-            title: "particles",
-            template: './src/public/index.html',
-            chunks: ['particles'],
+        // }),
+        // new HtmlWebpackPlugin({
+        //     hash: true,
+        //     filename: './particles.html',
+        //     title: "particles",
+        //     template: './src/public/index.html',
+        //     chunks: ['particles'],
 
-        }),
+        // }),
         new HtmlWebpackPlugin({
             hash: true,
-            filename: './samplescene.html',
-            title: "Sample Scene",
+            filename: './maingame.html',
+            title: "Main Game",
             template: './src/public/index.html',
-            chunks: ['samplescene'],
+            chunks: ['maingame'],
 
         }),
     ],
