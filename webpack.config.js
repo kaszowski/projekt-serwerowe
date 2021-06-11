@@ -35,7 +35,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             hash: true,
             filename: './samplescene.html',
-            title: "samplescene",
+            title: "Sample Scene",
             template: './src/public/index.html',
             chunks: ['samplescene'],
 

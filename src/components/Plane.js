@@ -7,14 +7,13 @@ import {
     RepeatWrapping,
     MeshPhongMaterial
 } from "three";
-import floorTex from "./assets/floor.png"
 
 export default class Plane {
 
-    constructor(scene, sizeX, sizeZ, posX, posZ) {
+    constructor(scene, sizeX, sizeZ, posX, pozY, posZ, planeTex) {
         this.planebase = new PlaneGeometry(sizeX, sizeZ);
 
-        this.texture = new TextureLoader().load(floorTex)
+        this.texture = new TextureLoader().load(planeTex)
         this.texture.wrapS = RepeatWrapping
         this.texture.wrapT = RepeatWrapping
         this.texture.repeat.set(sizeX / 10, sizeZ / 10)
@@ -31,12 +30,12 @@ export default class Plane {
         this.planemesh.rotation.x = 1 / 2 * Math.PI
         //this.plane.receiveShadow = true
 
-        this.setPosition(posX + (sizeX / 2), posZ + (sizeZ / 2))
+        this.setPosition(posX + (sizeX / 2), pozY, posZ + (sizeZ / 2))
 
         scene.add(this.planemesh)
     }
-    setPosition(x, z) {
-        this.planemesh.position.set(x, 0, z)
+    setPosition(x, y, z) {
+        this.planemesh.position.set(x, y, z)
     }
     addToScene(scene) {
         scene.add(this.planemesh)

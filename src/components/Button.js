@@ -1,44 +1,54 @@
-//unprepared
-
 import {
     IcosahedronGeometry,
     MeshNormalMaterial,
+    MeshPhongMaterial,
     BoxGeometry,
     Mesh,
     DoubleSide,
+    FrontSide,
     Object3D,
-    AxesHelper
+    AxesHelper,
+    TextureLoader
 } from "three";
+import buttonTex from './assets/floor.png'
 
 export default class Button {
 
-    constructor(scene) {
-        //console.log("Box")
+    constructor(scene, bridge, x, z, bridgeMin, bridgeMax) {
         this.scene = scene;
-        this.geometry = new BoxGeometry();
-        this.material = new MeshNormalMaterial();
+        this.geometry = new BoxGeometry(10, 2, 10);
+        this.material = new MeshPhongMaterial({
+            map: new TextureLoader().load(buttonTex)
+        });
+        this.isPressed = false
+        this.bridge = bridge
+        this.bridgeMax = bridgeMax
+        this.bridgeMin = bridgeMin
+
         this.box = new Mesh(this.geometry, this.material);
         this.container = new Object3D();
         this.container.add(this.box)
-        this.container.add(new AxesHelper(1000))
+        this.box.position.set(5, 1, 5)
+        this.container.position.set(x, -5, z)
+
         this.scene.add(this.container)
     }
-    rotateLeft() {
-        this.container.rotation.y += 0.01
+    press() {
+        this.isPressed = true
+        this.container.position.y = -1.9
     }
-    rotateRight() {
-        this.container.rotation.y -= 0.01
+    release() {
+        this.isPressed = false
+        this.container.position.y = -1
     }
-    moveLeft() {
-        this.container.position.x -= 0.1
+    riseBridge() {
+        if (this.bridge.position.y < this.bridgeMax) {
+            this.bridge.position.y += 0.25
+        }
     }
-    moveRight() {
-        this.container.position.x += 0.1
-    }
-    moveUp() {
-        this.container.position.z -= 0.1
-    }
-    moveDown() {
-        this.container.position.z += 0.1
+    lowerBridge() {
+        if (this.bridge.position.y > this.bridgeMin) {
+            this.bridge.position.y -= 0.25
+        }
     }
 }
