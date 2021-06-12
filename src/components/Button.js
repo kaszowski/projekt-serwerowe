@@ -14,7 +14,7 @@ import buttonTex from './assets/floor.png'
 
 export default class Button {
 
-    constructor(scene, bridge, x, z, bridgeMin, bridgeMax) {
+    constructor(scene, bridge, x, y, z, bridgeMin, bridgeMax) {
         this.scene = scene;
         this.geometry = new BoxGeometry(10, 2, 10);
         this.material = new MeshPhongMaterial({
@@ -24,22 +24,23 @@ export default class Button {
         this.bridge = bridge
         this.bridgeMax = bridgeMax
         this.bridgeMin = bridgeMin
+        this.y = y
 
         this.box = new Mesh(this.geometry, this.material);
         this.container = new Object3D();
         this.container.add(this.box)
         this.box.position.set(5, 1, 5)
-        this.container.position.set(x, -5, z)
+        this.container.position.set(x, y, z)
 
         this.scene.add(this.container)
     }
     press() {
         this.isPressed = true
-        this.container.position.y = -1.9
+        this.container.position.y = this.y - 1.9
     }
     release() {
         this.isPressed = false
-        this.container.position.y = -1
+        this.container.position.y = this.y - 1.0
     }
     riseBridge() {
         if (this.bridge.position.y < this.bridgeMax) {

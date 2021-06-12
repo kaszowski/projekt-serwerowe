@@ -31,8 +31,25 @@ import bridgePNG from "./assets/stone_path.png"
 export default class SampleScene {
     constructor(container) {
 
+        // SOCKET BASE DATA
+
         this.socket = io()
-        this.socket.emit("login", "someCompanionData")
+
+        this.socket.on("updateMovement", (companionData) => {
+            if (this.isLoaded) {
+                this.companion.model.container.position.x = companionData.x
+                this.companion.model.container.position.y = companionData.y
+                this.companion.model.container.position.z = companionData.z
+                this.companion.model.container.rotation.y = companionData.rotation
+                if (this.companion.animation.animName != companionData.animation) {
+                    this.player.animation.playAnim(companionData.animation)
+                }
+            }
+        })
+
+        // FETCH
+
+        //todo
 
         // BASE DATA
 
@@ -45,7 +62,7 @@ export default class SampleScene {
         // GRID HELPER
 
         this.gridHelper = new GridHelper(1000, 100);
-        this.gridHelper.position.y -= 20
+        this.gridHelper.position.y -= 40
         this.scene.add(this.gridHelper);
 
         // PLAYER
@@ -76,19 +93,14 @@ export default class SampleScene {
             this.player.animation = new Animation(this.player.model.container.children[0])
             this.player.animation.playAnim("stand")
             this.scene.add(this.player.model.container)
+            this.player.model.container.position.set(30, 9, -130)
 
             // COMPANION UPDATE
             this.companion.model = new Player(this.model.mesh.clone())
             this.companion.animation = new Animation(this.companion.model.container.children[0])
             this.companion.animation.playAnim("stand")
             this.scene.add(this.companion.model.container)
-            this.companion.model.container.position.set(10, 9, 90)
-            setTimeout(() => {
-                this.companion.model.container.position.set(10, 9, 70)
-            }, 5000);
-            setTimeout(() => {
-                this.companion.model.container.position.set(10, 9, 90)
-            }, 10000);
+            this.companion.model.container.position.set(30, 9, -130)
         };
 
         // STATS
@@ -108,36 +120,154 @@ export default class SampleScene {
         this.level = {
             floor: new Array(),
             bridges: new Array(),
-            buttons: new Array()
+            buttons: new Array(),
         }
 
         // FLOOR
 
-        this.level.floorplan = [ //unused yet
-            { 'width': 20, 'depth': 20, 'x': 0, 'z': 0 },
-            { 'width': 20, 'depth': 20, 'x': 0, 'z': 0 },
+        this.level.floorplan = [
+            { 'width': 3 * 20, 'depth': 3 * 20, 'x': 0 * 20, 'y': 0 * (-20), 'z': 8 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 3 * 20, 'y': 0 * (-20), 'z': 7 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 4 * 20, 'y': 0 * (-20), 'z': 8 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 6 * 20, 'y': 0 * (-20), 'z': 7 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 6 * 20, 'y': 0 * (-20), 'z': 6 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 8 * 20, 'y': 0 * (-20), 'z': 7 * (-20) },
+            { 'width': 1 * 20, 'depth': 2 * 20, 'x': 8 * 20, 'y': 0 * (-20), 'z': 12 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 9 * 20, 'y': 0 * (-20), 'z': 12 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 11 * 20, 'y': 0 * (-20), 'z': 12 * (-20) },
+            { 'width': 1 * 20, 'depth': 2 * 20, 'x': 12 * 20, 'y': 0 * (-20), 'z': 12 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 12 * 20, 'y': 0 * (-20), 'z': 7 * (-20) },
+            { 'width': 3 * 20, 'depth': 6 * 20, 'x': 9 * 20, 'y': 2 * (-20), 'z': 11 * (-20) },
+            { 'width': 4 * 20, 'depth': 1 * 20, 'x': 13 * 20, 'y': 0 * (-20), 'z': 7 * (-20) },
+            { 'width': 1 * 20, 'depth': 2 * 20, 'x': 15 * 20, 'y': 0 * (-20), 'z': 6 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 15 * 20, 'y': 0 * (-20), 'z': 10 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 16 * 20, 'y': 0 * (-20), 'z': 10 * (-20) },
+            { 'width': 1 * 20, 'depth': 2 * 20, 'x': 18 * 20, 'y': 0 * (-20), 'z': 10 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 18 * 20, 'y': 0 * (-20), 'z': 5 * (-20) },
+            { 'width': 4 * 20, 'depth': 1 * 20, 'x': 18 * 20, 'y': 0 * (-20), 'z': 4 * (-20) },
+            { 'width': 1 * 20, 'depth': 2 * 20, 'x': 21 * 20, 'y': 0 * (-20), 'z': 6 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 20 * 20, 'y': 0 * (-20), 'z': 7 * (-20) },
+            { 'width': 1 * 20, 'depth': 2 * 20, 'x': 16 * 20, 'y': 0 * (-20), 'z': 3 * (-20) },
+            { 'width': 6 * 20, 'depth': 1 * 20, 'x': 17 * 20, 'y': 0 * (-20), 'z': 2 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 21 * 20, 'y': 0 * (-20), 'z': 10 * (-20) },
+            { 'width': 1 * 20, 'depth': 15 * 20, 'x': 23 * 20, 'y': 0 * (-20), 'z': 16 * (-20) },
+            { 'width': 2 * 20, 'depth': 2 * 20, 'x': 16 * 20, 'y': 1 * (-20), 'z': 9 * (-20) },
+            { 'width': 2 * 20, 'depth': 2 * 20, 'x': 16 * 20, 'y': 1 * (-20), 'z': 6 * (-20) },
+            { 'width': 2 * 20, 'depth': 2 * 20, 'x': 19 * 20, 'y': 1 * (-20), 'z': 6 * (-20) },
+            { 'width': 3 * 20, 'depth': 1 * 20, 'x': 20 * 20, 'y': 0 * (-20), 'z': 16 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 19 * 20, 'y': 0 * (-20), 'z': 17 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 17 * 20, 'y': 0 * (-20), 'z': 17 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 15 * 20, 'y': 0 * (-20), 'z': 17 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 13 * 20, 'y': 0 * (-20), 'z': 17 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 11 * 20, 'y': 0 * (-20), 'z': 17 * (-20) },
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 9 * 20, 'y': 0 * (-20), 'z': 17 * (-20) },
+            { 'width': 8 * 20, 'depth': 1 * 20, 'x': 1 * 20, 'y': 0 * (-20), 'z': 16 * (-20) },
+            { 'width': 1 * 20, 'depth': 6 * 20, 'x': 1 * 20, 'y': 0 * (-20), 'z': 15 * (-20) },
+            { 'width': 1 * 20, 'depth': 2 * 20, 'x': 1 * 20, 'y': 0 * (-20), 'z': 4 * (-20) },
+            { 'width': 3 * 20, 'depth': 1 * 20, 'x': 1 * 20, 'y': 0 * (-20), 'z': 2 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 3 * 20, 'y': 0 * (-20), 'z': 3 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 3 * 20, 'y': 0 * (-20), 'z': 1 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 6 * 20, 'y': 0 * (-20), 'z': 3 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 6 * 20, 'y': 0 * (-20), 'z': 1 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 8 * 20, 'y': 0 * (-20), 'z': 3 * (-20) },
+            { 'width': 2 * 20, 'depth': 1 * 20, 'x': 8 * 20, 'y': 0 * (-20), 'z': 1 * (-20) },
+            { 'width': 6 * 20, 'depth': 1 * 20, 'x': 9 * 20, 'y': 0 * (-20), 'z': 2 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 13 * 20, 'y': 0 * (-20), 'z': 3 * (-20) },
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 13 * 20, 'y': 0 * (-20), 'z': 1 * (-20) },
         ]
-        this.level.floor.push(new Plane(this.scene, 20, 100, 0, 0, 0, floorPNG).planemesh)
-        this.level.floor.push(new Plane(this.scene, 100, 20, 0, 0, 120, floorPNG).planemesh)
-        this.level.floor.push(new Plane(this.scene, 80, 20, 20, 0, 60, floorPNG).planemesh)
-        this.level.floor.push(new Plane(this.scene, 60, 20, 40, 0, 0, floorPNG).planemesh)
-        this.level.floor.push(new Plane(this.scene, 20, 140, 100, 0, 0, floorPNG).planemesh)
-        this.level.floor.push(new Plane(this.scene, 20, 20, 120, 0, 60, floorPNG).planemesh)
-        this.level.floor.push(new Plane(this.scene, 20, 140, 140, 0, 0, floorPNG).planemesh)
 
-        //BRIDGES
+        for (var i = 0; i < this.level.floorplan.length; i++) {
+            this.level.floor.push(new Plane(this.scene, this.level.floorplan[i].width, this.level.floorplan[i].depth, this.level.floorplan[i].x, this.level.floorplan[i].y, this.level.floorplan[i].z, floorPNG).planemesh)
+        }
 
-        this.level.bridges.push(new Plane(this.scene, 20, 20, 0, -10, 100, bridgePNG).planemesh)
-        this.level.bridges.push(new Plane(this.scene, 20, 20, 0, -10, 100, bridgePNG).planemesh)
+        // BRIDGES
 
-        for (var i = 0; i < this.level.bridges.length; i++) {
+        this.level.bridgeplan = [
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 5 * 20, 'y': 1 * (-20), 'z': 7 * (-20) }, //1
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 5 * 20, 'y': 1 * (-20), 'z': 7 * (-20) }, //1
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 9 * 20, 'y': 2 * (-20), 'z': 5 * (-20) }, //2
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 8 * 20, 'y': 1 * (-20), 'z': 10 * (-20) }, //3
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 10 * 20, 'y': 1 * (-20), 'z': 12 * (-20) }, //4
+            { 'width': 1 * 20, 'depth': 3 * 20, 'x': 12 * 20, 'y': 1 * (-20), 'z': 10 * (-20) }, //5
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 11 * 20, 'y': 2 * (-20), 'z': 5 * (-20) }, //6
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 18 * 20, 'y': 1 * (-20), 'z': 8 * (-20) }, //7
+            { 'width': 3 * 20, 'depth': 1 * 20, 'x': 17 * 20, 'y': 1 * (-20), 'z': 7 * (-20) }, //7
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 18 * 20, 'y': 1 * (-20), 'z': 6 * (-20) }, //7
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 18 * 20, 'y': 1 * (-20), 'z': 8 * (-20) }, //7
+            { 'width': 3 * 20, 'depth': 1 * 20, 'x': 17 * 20, 'y': 1 * (-20), 'z': 7 * (-20) }, //7
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 18 * 20, 'y': 1 * (-20), 'z': 6 * (-20) }, //7
+            { 'width': 1 * 20, 'depth': 2 * 20, 'x': 21 * 20, 'y': 1 * (-20), 'z': 9 * (-20) }, //8
+            { 'width': 3 * 20, 'depth': 1 * 20, 'x': 15 * 20, 'y': 1 * (-20), 'z': 4 * (-20) }, //9
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 18 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //10
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 18 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //10
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 16 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //11
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 16 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //11
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 14 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //12
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 14 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //12
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 12 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //13
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 12 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //13
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 10 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //14
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 10 * 20, 'y': 1 * (-20), 'z': 16 * (-20) }, //14
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 1 * 20, 'y': 1 * (-20), 'z': 9 * (-20) }, //15
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 1 * 20, 'y': 1 * (-20), 'z': 5 * (-20) }, //15
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 1 * 20, 'y': 1 * (-20), 'z': 9 * (-20) }, //15
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 1 * 20, 'y': 1 * (-20), 'z': 5 * (-20) }, //15
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 5 * 20, 'y': 1 * (-20), 'z': 1 * (-20) }, //16
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 5 * 20, 'y': 1 * (-20), 'z': 3 * (-20) }, //17
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 7 * 20, 'y': 1 * (-20), 'z': 1 * (-20) }, //18
+            { 'width': 1 * 20, 'depth': 1 * 20, 'x': 7 * 20, 'y': 1 * (-20), 'z': 3 * (-20) }, //19
+        ]
+
+        for (var i = 0; i < this.level.bridgeplan.length; i++) {
+            this.level.bridges.push(new Plane(this.scene, this.level.bridgeplan[i].width, this.level.bridgeplan[i].depth, this.level.bridgeplan[i].x, this.level.bridgeplan[i].y, this.level.bridgeplan[i].z, bridgePNG).planemesh)
             this.level.floor.push(this.level.bridges[i])
         }
 
         // BUTTONS
 
-        this.level.buttons.push(new Button(this.scene, this.level.bridges[0], 5, 85, -10, 0))
-        this.level.buttons.push(new Button(this.scene, this.level.bridges[1], 5, 125, -10, 0))
+        this.level.buttonplan = [
+            { 'x': 4 * 20 + 5, 'y': 0 * (-20), 'z': 8 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //1
+            { 'x': 6 * 20 + 5, 'y': 0 * (-20), 'z': 6 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //1
+            { 'x': 8 * 20 + 5, 'y': 0 * (-20), 'z': 5 * (-20) + 5, 'bridgeMin': 2 * (-20), 'bridgeMax': 0 * (-20), }, //2
+            { 'x': 10 * 20 + 5, 'y': 2 * (-20), 'z': 10 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //3
+            { 'x': 10 * 20 + 5, 'y': 2 * (-20), 'z': 9 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //4
+            { 'x': 10 * 20 + 5, 'y': 2 * (-20), 'z': 8 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //5
+            { 'x': 12 * 20 + 5, 'y': 0 * (-20), 'z': 5 * (-20) + 5, 'bridgeMin': 2 * (-20), 'bridgeMax': 0 * (-20), }, //6
+            { 'x': 16 * 20 + 5, 'y': 1 * (-20), 'z': 9 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //7
+            { 'x': 16 * 20 + 5, 'y': 1 * (-20), 'z': 9 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //7
+            { 'x': 16 * 20 + 5, 'y': 1 * (-20), 'z': 9 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //7
+            { 'x': 18 * 20 + 5, 'y': 0 * (-20), 'z': 9 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //7
+            { 'x': 18 * 20 + 5, 'y': 0 * (-20), 'z': 9 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //7
+            { 'x': 18 * 20 + 5, 'y': 0 * (-20), 'z': 9 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //7
+            { 'x': 20 * 20 + 5, 'y': 1 * (-20), 'z': 5 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //8
+            { 'x': 21 * 20 + 5, 'y': 0 * (-20), 'z': 10 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //9
+            { 'x': 19 * 20 + 5, 'y': 0 * (-20), 'z': 17 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //10
+            { 'x': 17 * 20 + 5, 'y': 0 * (-20), 'z': 15 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //10
+            { 'x': 17 * 20 + 5, 'y': 0 * (-20), 'z': 17 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //11
+            { 'x': 15 * 20 + 5, 'y': 0 * (-20), 'z': 15 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //11
+            { 'x': 15 * 20 + 5, 'y': 0 * (-20), 'z': 17 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //12
+            { 'x': 13 * 20 + 5, 'y': 0 * (-20), 'z': 15 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //12
+            { 'x': 13 * 20 + 5, 'y': 0 * (-20), 'z': 17 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //13
+            { 'x': 11 * 20 + 5, 'y': 0 * (-20), 'z': 15 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //13
+            { 'x': 11 * 20 + 5, 'y': 0 * (-20), 'z': 17 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //14
+            { 'x': 9 * 20 + 5, 'y': 0 * (-20), 'z': 15 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //14
+            { 'x': 1 * 20 + 5, 'y': 0 * (-20), 'z': 11 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //15
+            { 'x': 1 * 20 + 5, 'y': 0 * (-20), 'z': 11 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //15
+            { 'x': 1 * 20 + 5, 'y': 0 * (-20), 'z': 3 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //15
+            { 'x': 1 * 20 + 5, 'y': 0 * (-20), 'z': 3 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //15
+            { 'x': 4 * 20 + 5, 'y': 0 * (-20), 'z': 3 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //16
+            { 'x': 6 * 20 + 5, 'y': 0 * (-20), 'z': 1 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //17
+            { 'x': 6 * 20 + 5, 'y': 0 * (-20), 'z': 3 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //18
+            { 'x': 8 * 20 + 5, 'y': 0 * (-20), 'z': 1 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //19
+        ]
+
+        // console.log(JSON.stringify(this.level.floorplan))
+        // console.log(JSON.stringify(this.level.bridgeplan))
+        // console.log(JSON.stringify(this.level.buttonplan))
+
+        for (var i = 0; i < this.level.buttonplan.length; i++) {
+            this.level.buttons.push(new Button(this.scene, this.level.bridges[i], this.level.buttonplan[i].x, this.level.buttonplan[i].y, this.level.buttonplan[i].z, this.level.buttonplan[i].bridgeMin, this.level.buttonplan[i].bridgeMax))
+        }
 
         // LIGHT
 
@@ -192,7 +322,7 @@ export default class SampleScene {
                     this.player.model.container.position.y = this.player.intersects[0].object.position.y + 9
                 }
             } else {
-                this.player.model.container.position.set(5, 9, 5) // spawn area
+                this.player.model.container.position.set(30, 9, -130) // spawn area
             }
 
             // BUTTON PRESS
@@ -380,9 +510,19 @@ export default class SampleScene {
                 }
             }
 
+            // SOCKET - SEND DATA
+
+            this.socket.updateMovementData = {}
+            this.socket.updateMovementData.x = this.player.model.container.position.x
+            this.socket.updateMovementData.y = this.player.model.container.position.y
+            this.socket.updateMovementData.z = this.player.model.container.position.z
+            this.socket.updateMovementData.rotation = this.player.model.container.rotation.y
+            this.socket.updateMovementData.animation = this.player.animation.animName
+            this.socket.emit("updateMovement", JSON.stringify(this.socket.updateMovementData)) //x, y, z, rotation, animation
+
             // FOLLOW PLAYER WITH CAMERA
 
-            this.camera.position.set(this.player.model.container.position.x + 0, this.player.model.container.position.y + 60, this.player.model.container.position.z + 100)
+            this.camera.position.set(this.player.model.container.position.x + 0, this.player.model.container.position.y + 60, this.player.model.container.position.z + 100) //0,60,100
             this.camera.lookAt(new Vector3(this.player.model.container.position.x, this.player.model.container.position.y, this.player.model.container.position.z))
         }
 
