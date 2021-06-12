@@ -62,7 +62,17 @@ io.on('connection', (socket) => {
                 }    
         }
         socket.join(rooms.length-1)
-        socket.emit("joined", "user "+socket.id+" joined room "+(rooms.length-1))
+        io.to(rooms.length-1).emit("joined", "user "+socket.id+" joined room "+(rooms.length-1))
+    })
+        socket.on("updateMovement", (arg)=>{
+        for(var i=0; i<rooms.length; i++)
+        {
+            if(rooms[i][0]==socket.id || rooms[i][1]==socket.id)
+            {
+                io.to(i).emit("updateMovement", arg)
+                break
+            }
+        }
     })
 });  
 
