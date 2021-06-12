@@ -35,15 +35,26 @@ export default class SampleScene {
 
         this.socket = io()
         this.socket.on("updateMovement", (companionData) => {
-            if (this.isLoaded) {
+            companionData = JSON.parse(companionData)
+            if (this.isLoaded && this.playerType != companionData.playerType) {
                 this.companion.model.container.position.x = companionData.x
                 this.companion.model.container.position.y = companionData.y
                 this.companion.model.container.position.z = companionData.z
                 this.companion.model.container.rotation.y = companionData.rotation
                 if (this.companion.animation.animName != companionData.animation) {
-                    this.player.animation.playAnim(companionData.animation)
+                    this.companion.animation.playAnim(companionData.animation)
                 }
             }
+        })
+        this.socket.emit("login", "none")
+        this.socket.on("joined", (data) => {
+            this.socketdata = JSON.parse(data)
+            // console.log(this.socketdata.message)
+            // console.log(this.socketdata.playerType)
+            if (this.playerType == undefined) {
+                this.playerType = this.socketdata.playerType
+            }
+            // console.log("I AM " + this.playerType)
         })
 
         // FETCH
@@ -519,7 +530,9 @@ export default class SampleScene {
             this.socket.updateMovementData.z = this.player.model.container.position.z
             this.socket.updateMovementData.rotation = this.player.model.container.rotation.y
             this.socket.updateMovementData.animation = this.player.animation.animName
-            this.socket.emit("updateMovement", JSON.stringify(this.socket.updateMovementData)) //x, y, z, rotation, animation
+            this.socket.updateMovementData.playerType = this.playerType
+            // console.log(this.socket.updateMovementData)
+            this.socket.emit("updateMovement", JSON.stringify(this.socket.updateMovementData)) //x, y, z, rotation, animation, playerType
 
             // FOLLOW PLAYER WITH CAMERA
 
