@@ -34,7 +34,6 @@ export default class SampleScene {
         // SOCKET BASE DATA
 
         this.socket = io()
-
         this.socket.on("updateMovement", (companionData) => {
             if (this.isLoaded) {
                 this.companion.model.container.position.x = companionData.x
@@ -94,6 +93,8 @@ export default class SampleScene {
             this.player.animation.playAnim("stand")
             this.scene.add(this.player.model.container)
             this.player.model.container.position.set(30, 9, -130)
+            // this.player.model.container.position.set(10 * 20 + 10, 9, 2 * (-20) + 10)
+
 
             // COMPANION UPDATE
             this.companion.model = new Player(this.model.mesh.clone())
@@ -524,6 +525,13 @@ export default class SampleScene {
 
             this.camera.position.set(this.player.model.container.position.x + 0, this.player.model.container.position.y + 60, this.player.model.container.position.z + 100) //0,60,100
             this.camera.lookAt(new Vector3(this.player.model.container.position.x, this.player.model.container.position.y, this.player.model.container.position.z))
+
+            // FINISH THE GAME
+
+            if ((this.player.model.container.position.x > 13 * 20 && this.player.model.container.position.x < 14 * 20) && (this.player.model.container.position.z > 2 * (-20) && this.player.model.container.position.z < 1 * (-20))) {
+                window.location.href = './finish.html'
+            }
+
         }
 
         // BASE DATA
