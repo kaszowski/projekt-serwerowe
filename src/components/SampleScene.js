@@ -49,12 +49,12 @@ export default class SampleScene {
         this.socket.emit("login", "none")
         this.socket.on("joined", (data) => {
             this.socketdata = JSON.parse(data)
-            // console.log(this.socketdata.message)
-            // console.log(this.socketdata.playerType)
             if (this.playerType == undefined) {
                 this.playerType = this.socketdata.playerType
+                this.room = this.socketdata.room
+                this.userid = this.socketdata.id
+                document.title = "Main Game - Room " + this.room
             }
-            // console.log("I AM " + this.playerType)
         })
 
         // FETCH
