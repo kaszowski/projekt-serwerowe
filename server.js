@@ -27,7 +27,7 @@ app.post("/data", function (req, res) {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("test")
-        dbo.collection("TestCol").findOne({ level: parseInt(req.body.level) }, function (err, result) {
+        dbo.collection("TestCol").findOne({ level: 0}, function (err, result) {
             res.send(result.content)
             db.close();
         })
