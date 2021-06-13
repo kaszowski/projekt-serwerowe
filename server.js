@@ -61,7 +61,7 @@ io.on('connection', (socket) => {
                 }
         }
         socket.join(rooms.length - 1)
-        io.to(rooms.length - 1).emit("joined", JSON.stringify({ message: "user " + socket.id + " joined room " + (rooms.length - 1), playerType: rooms[rooms.length - 1].length }))
+        io.to(rooms.length - 1).emit("joined", JSON.stringify({ id: socket.id, room: rooms.length - 1, playerType: rooms[rooms.length - 1].length }))
     })
     socket.on("updateMovement", (arg) => {
         for (var i = 0; i < rooms.length; i++) {
