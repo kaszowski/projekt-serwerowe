@@ -27,7 +27,7 @@ app.post("/data", function (req, res) {
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("test")
-        dbo.collection("TestCol").findOne({ level: parseInt(req.body.level) }, function (err, result) {
+        dbo.collection("TestCol").findOne({ level: 0}, function (err, result) {
             res.send(result.content)
             db.close();
         })
@@ -61,12 +61,12 @@ io.on('connection', (socket) => {
                 }
         }
         socket.join(rooms.length - 1)
-        io.to(rooms.length - 1).emit("joined", JSON.stringify({ id: socket.id, room: rooms.length - 1, playerType: rooms[rooms.length - 1].length }))
+        socket.to(rooms.length - 1).emit("joined", JSON.stringify({ id: socket.id, room: rooms.length - 1, playerType: rooms[rooms.length - 1].length }))
     })
     socket.on("updateMovement", (arg) => {
         for (var i = 0; i < rooms.length; i++) {
             if (rooms[i][0] == socket.id || rooms[i][1] == socket.id) {
-                io.to(i).emit("updateMovement", arg)
+                socket.to(i).emit("updateMovement", arg)
                 break
             }
         }
