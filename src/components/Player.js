@@ -28,17 +28,30 @@ export default class Player {
     moveBack() {
         this.container.position.z += 0.5
     }
-    lookLeft() {
-        this.container.rotation.y = 1 * Math.PI
-    }
+
     lookRight() {
         this.container.rotation.y = 0 * Math.PI
+    }
+    lookRightForward() {
+        this.container.rotation.y = 0.25 * Math.PI
     }
     lookForward() {
         this.container.rotation.y = 0.5 * Math.PI
     }
+    lookLeftForward() {
+        this.container.rotation.y = 0.75 * Math.PI
+    }
+    lookLeft() {
+        this.container.rotation.y = 1 * Math.PI
+    }
+    lookLeftBack() {
+        this.container.rotation.y = 1.25 * Math.PI
+    }
     lookBack() {
         this.container.rotation.y = 1.5 * Math.PI
+    }
+    lookRightBack() {
+        this.container.rotation.y = 1.75 * Math.PI
     }
 
 }

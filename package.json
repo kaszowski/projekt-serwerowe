@@ -22,6 +22,6 @@
     "server": "webpack serve --open",
     "go": "webpack && webpack serve"
   },
-  "author": "wiktor",
+  "author": "Hojda & Kaszowski",
   "license": "ISC"
 }

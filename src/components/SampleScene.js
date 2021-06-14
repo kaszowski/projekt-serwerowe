@@ -31,6 +31,17 @@ import bridgePNG from "./assets/stone_path.png"
 export default class SampleScene {
     constructor(container) {
 
+        // FETCH
+
+        // fetch('./data', {
+        //     method: 'POST',
+        // })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         this.mapLoaded = true
+        //         console.log(data);
+        //     })
+
         // SOCKET BASE DATA
 
         this.socket = io()
@@ -355,19 +366,17 @@ export default class SampleScene {
 
             //MOVEMENT - FORWARD
 
-            if (Config.moveForward) {
+            if (Config.moveForward && Config.moveBack == false) {
                 for (var i = 0; i < 5; i++) {
                     this.player.model.moveForward()
                 }
                 this.player.ray = new Ray(this.player.model.container.position, new Vector3(0, -1, 0).normalize())
                 this.player.raycaster.ray = this.player.ray
                 this.player.intersects = this.player.raycaster.intersectObjects(this.level.floor);
-                // console.log(this.level.floor[0])
                 if (this.player.intersects[0]) {
                     if (this.player.intersects[0].distance < 9.1 && this.player.intersects[0].distance > 8.9) {
                         for (var i = 0; i < 4; i++) {
                             this.player.model.moveBack()
-                            this.player.model.lookForward()
                             if (this.player.animation.animName != "run") {
                                 this.player.animation.playAnim("run")
                             }
@@ -396,7 +405,7 @@ export default class SampleScene {
 
             //MOVEMENT - BACKWARD
 
-            if (Config.moveBack) {
+            if (Config.moveBack && Config.moveForward == false) {
                 for (var i = 0; i < 5; i++) {
                     this.player.model.moveBack()
                 }
@@ -407,7 +416,6 @@ export default class SampleScene {
                     if (this.player.intersects[0].distance < 9.1 && this.player.intersects[0].distance > 8.9) {
                         for (var i = 0; i < 4; i++) {
                             this.player.model.moveForward()
-                            this.player.model.lookBack()
                             if (this.player.animation.animName != "run") {
                                 this.player.animation.playAnim("run")
                             }
@@ -436,7 +444,7 @@ export default class SampleScene {
 
             //MOVEMENT - RIGHT
 
-            if (Config.moveRight) {
+            if (Config.moveRight && Config.moveLeft == false) {
                 for (var i = 0; i < 5; i++) {
                     this.player.model.moveRight()
                 }
@@ -447,7 +455,6 @@ export default class SampleScene {
                     if (this.player.intersects[0].distance < 9.1 && this.player.intersects[0].distance > 8.9) {
                         for (var i = 0; i < 4; i++) {
                             this.player.model.moveLeft()
-                            this.player.model.lookRight()
                             if (this.player.animation.animName != "run") {
                                 this.player.animation.playAnim("run")
                             }
@@ -476,7 +483,7 @@ export default class SampleScene {
 
             //MOVEMENT - LEFT
 
-            if (Config.moveLeft) {
+            if (Config.moveLeft && Config.moveRight == false) {
                 for (var i = 0; i < 5; i++) {
                     this.player.model.moveLeft()
                 }
@@ -487,7 +494,6 @@ export default class SampleScene {
                     if (this.player.intersects[0].distance < 9.1 && this.player.intersects[0].distance > 8.9) {
                         for (var i = 0; i < 4; i++) {
                             this.player.model.moveRight()
-                            this.player.model.lookLeft()
                             if (this.player.animation.animName != "run") {
                                 this.player.animation.playAnim("run")
                             }
@@ -512,6 +518,27 @@ export default class SampleScene {
                         }
                     }
                 }
+            }
+
+            // MOVEMENT - ROTATION
+            if (Config.moveBack == Config.moveForward && Config.moveLeft == true && Config.moveRight == false) { // LEFT
+                this.player.model.lookLeft()
+            } else if (Config.moveBack == Config.moveForward && Config.moveLeft == false && Config.moveRight == true) { // RIGHT
+                this.player.model.lookRight()
+            } else if (Config.moveBack == false && Config.moveForward == true && Config.moveLeft == Config.moveRight) { // FORWARD
+                this.player.model.lookForward()
+            } else if (Config.moveBack == true && Config.moveForward == false && Config.moveLeft == Config.moveRight) { // BACK
+                this.player.model.lookBack()
+            } else if (Config.moveBack == false && Config.moveForward == true && Config.moveLeft == true && Config.moveRight == false) { // LEFT TOP
+                this.player.model.lookLeftForward()
+            } else if (Config.moveBack == false && Config.moveForward == true && Config.moveLeft == false && Config.moveRight == true) { // RIGHT TOP
+                this.player.model.lookRightForward()
+            } else if (Config.moveBack == true && Config.moveForward == false && Config.moveLeft == true && Config.moveRight == false) { //LEFT BACK
+                this.player.model.lookLeftBack()
+            } else if (Config.moveBack == true && Config.moveForward == false && Config.moveLeft == false && Config.moveRight == true) { // RIGHT BACK
+                this.player.model.lookRightBack()
+            } else {
+                this.player.model.lookBack()
             }
 
             // MOVEMENT - STAND STILL
