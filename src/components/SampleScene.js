@@ -33,21 +33,35 @@ export default class SampleScene {
 
         // FETCH
 
-        // fetch('./data', {
-        //     method: 'POST',
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         this.mapLoaded = true
-        //         console.log(data);
-        //     })
+        fetch('./data', {
+            method: 'POST',
+        })
+            .then(response => response.json())
+            .then(data => {
+                this.level.floorplan = data.floorplan
+                this.level.bridgeplan = data.bridgeplan
+                this.level.buttonplan = data.buttonplan
+
+                for (var i = 0; i < this.level.floorplan.length; i++) {
+                    this.level.floor.push(new Plane(this.scene, this.level.floorplan[i].width, this.level.floorplan[i].depth, this.level.floorplan[i].x, this.level.floorplan[i].y, this.level.floorplan[i].z, floorPNG).planemesh)
+                }
+                for (var i = 0; i < this.level.bridgeplan.length; i++) {
+                    this.level.bridges.push(new Plane(this.scene, this.level.bridgeplan[i].width, this.level.bridgeplan[i].depth, this.level.bridgeplan[i].x, this.level.bridgeplan[i].y, this.level.bridgeplan[i].z, bridgePNG).planemesh)
+                    this.level.floor.push(this.level.bridges[i])
+                }
+                for (var i = 0; i < this.level.buttonplan.length; i++) {
+                    this.level.buttons.push(new Button(this.scene, this.level.bridges[i], this.level.buttonplan[i].x, this.level.buttonplan[i].y, this.level.buttonplan[i].z, this.level.buttonplan[i].bridgeMin, this.level.buttonplan[i].bridgeMax))
+                }
+
+                this.mapLoaded = true
+            })
 
         // SOCKET BASE DATA
 
         this.socket = io()
         this.socket.on("updateMovement", (companionData) => {
             companionData = JSON.parse(companionData)
-            if (this.isLoaded && this.playerType != companionData.playerType) {
+            if (this.isLoaded && this.mapLoaded && this.playerType != companionData.playerType) {
                 this.companion.model.container.position.x = companionData.x
                 this.companion.model.container.position.y = companionData.y
                 this.companion.model.container.position.z = companionData.z
@@ -61,16 +75,13 @@ export default class SampleScene {
         this.socket.on("joined", (data) => {
             this.socketdata = JSON.parse(data)
             if (this.playerType == undefined) {
+                //console.log("Joined to room " + this.socketdata.room)
                 this.playerType = this.socketdata.playerType
                 this.room = this.socketdata.room
                 this.userid = this.socketdata.id
-                document.title = "Main Game - Room " + this.room
             }
+            document.title = "Main Game - Room " + this.room
         })
-
-        // FETCH
-
-        //todo
 
         // BASE DATA
 
@@ -148,6 +159,7 @@ export default class SampleScene {
 
         // FLOOR
 
+        /*
         this.level.floorplan = [
             { 'width': 3 * 20, 'depth': 3 * 20, 'x': 0 * 20, 'y': 0 * (-20), 'z': 8 * (-20) },
             { 'width': 2 * 20, 'depth': 1 * 20, 'x': 3 * 20, 'y': 0 * (-20), 'z': 7 * (-20) },
@@ -198,13 +210,11 @@ export default class SampleScene {
             { 'width': 1 * 20, 'depth': 1 * 20, 'x': 13 * 20, 'y': 0 * (-20), 'z': 3 * (-20) },
             { 'width': 1 * 20, 'depth': 1 * 20, 'x': 13 * 20, 'y': 0 * (-20), 'z': 1 * (-20) },
         ]
-
-        for (var i = 0; i < this.level.floorplan.length; i++) {
-            this.level.floor.push(new Plane(this.scene, this.level.floorplan[i].width, this.level.floorplan[i].depth, this.level.floorplan[i].x, this.level.floorplan[i].y, this.level.floorplan[i].z, floorPNG).planemesh)
-        }
+        */
 
         // BRIDGES
 
+        /*
         this.level.bridgeplan = [
             { 'width': 1 * 20, 'depth': 1 * 20, 'x': 5 * 20, 'y': 1 * (-20), 'z': 7 * (-20) }, //1
             { 'width': 1 * 20, 'depth': 1 * 20, 'x': 5 * 20, 'y': 1 * (-20), 'z': 7 * (-20) }, //1
@@ -240,14 +250,11 @@ export default class SampleScene {
             { 'width': 1 * 20, 'depth': 1 * 20, 'x': 7 * 20, 'y': 1 * (-20), 'z': 1 * (-20) }, //18
             { 'width': 1 * 20, 'depth': 1 * 20, 'x': 7 * 20, 'y': 1 * (-20), 'z': 3 * (-20) }, //19
         ]
-
-        for (var i = 0; i < this.level.bridgeplan.length; i++) {
-            this.level.bridges.push(new Plane(this.scene, this.level.bridgeplan[i].width, this.level.bridgeplan[i].depth, this.level.bridgeplan[i].x, this.level.bridgeplan[i].y, this.level.bridgeplan[i].z, bridgePNG).planemesh)
-            this.level.floor.push(this.level.bridges[i])
-        }
+        */
 
         // BUTTONS
 
+        /*
         this.level.buttonplan = [
             { 'x': 4 * 20 + 5, 'y': 0 * (-20), 'z': 8 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //1
             { 'x': 6 * 20 + 5, 'y': 0 * (-20), 'z': 6 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //1
@@ -283,14 +290,11 @@ export default class SampleScene {
             { 'x': 6 * 20 + 5, 'y': 0 * (-20), 'z': 3 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //18
             { 'x': 8 * 20 + 5, 'y': 0 * (-20), 'z': 1 * (-20) + 5, 'bridgeMin': 1 * (-20), 'bridgeMax': 0 * (-20), }, //19
         ]
+        */
 
         // console.log(JSON.stringify(this.level.floorplan))
         // console.log(JSON.stringify(this.level.bridgeplan))
         // console.log(JSON.stringify(this.level.buttonplan))
-
-        for (var i = 0; i < this.level.buttonplan.length; i++) {
-            this.level.buttons.push(new Button(this.scene, this.level.bridges[i], this.level.buttonplan[i].x, this.level.buttonplan[i].y, this.level.buttonplan[i].z, this.level.buttonplan[i].bridgeMin, this.level.buttonplan[i].bridgeMax))
-        }
 
         // LIGHT
 
@@ -320,7 +324,7 @@ export default class SampleScene {
 
         // GAMEPLAY
 
-        if (this.isLoaded) {
+        if (this.isLoaded && this.mapLoaded) {
 
             // BUTTON ACTIONS AND RELEASE
 
