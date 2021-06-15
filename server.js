@@ -4,6 +4,7 @@ var path = require("path")
 const bodyParser = require('body-parser');
 const http = require('http');
 const { Server } = require("socket.io");
+var Datastore = require('nedb')
 
 var app = express()
 
@@ -11,6 +12,11 @@ var PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 const io = new Server(server);
 var url = "mongodb://localhost:27017/test";
+
+var coll1 = new Datastore({
+    filename: 'kolekcja.db',
+    autoload: true
+});
 
 app.use(express.urlencoded());
 app.use(express.json());
@@ -24,14 +30,17 @@ app.get("/", function (req, res) {
 
 //tu wysyłanie danych z mongo
 app.post("/data", function (req, res) {
-    MongoClient.connect(url, function (err, db) {
+    /*MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("test")
         dbo.collection("TestCol").findOne({ level: 0}, function (err, result) {
             res.send(result.content)
             db.close();
         })
-    });
+    });*/
+    coll1.findOne({ }, function (err, docs) {
+		res.send(docs)
+	});
 })
 
 //obsługa websocketów - biblioteka socket.io
