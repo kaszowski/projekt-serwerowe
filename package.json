@@ -1,11 +1,12 @@
 {
-  "name": "final-project",
+  "name": "gamefinal",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "dependencies": {
     "express": "^4.17.1",
     "mongodb": "^3.6.9",
+    "nedb": "^1.8.0",
     "socket.io": "^4.1.2"
   },
   "devDependencies": {},
@@ -13,6 +14,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Michał Kaszowski Jakub Hojda",
   "license": "ISC"
 }
