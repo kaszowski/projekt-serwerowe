@@ -13,8 +13,8 @@ const io = new Server(server);
 var url = "mongodb://localhost:27017/test";
 
 var coll1 = new Datastore({
-    filename: 'kolekcja.db',
-    autoload: true
+    filename: 'kolekcja.db',
+    autoload: true
 });
 
 app.use(express.urlencoded());
@@ -29,6 +29,7 @@ app.get("/", function (req, res) {
 
 //tu wysyłanie danych z mongo
 app.post("/data", function (req, res) {
+    console.log("Requested Map Data")
     /*MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("test")
@@ -37,19 +38,19 @@ app.post("/data", function (req, res) {
             db.close();
         })
     });*/
-    coll1.findOne({ }, function (err, docs) {
-		res.send(docs)
-	});
+    coll1.findOne({}, function (err, docs) {
+        res.send(docs)
+    });
 })
 
 //obsługa websocketów - biblioteka socket.io
 var rooms = [[]]
 io.on('connection', (socket) => {
-    console.log("connection")
+    console.log("Connection Established")
     //tutaj jest przydzielanie do roomów
     //każdy pokój to 2 graczy
     socket.on("login", (arg) => {
-        console.log("login")
+        console.log("Login")
         switch (rooms[rooms.length - 1].length) {
             case 0:
                 {
