@@ -1,5 +1,4 @@
 var express = require("express")
-var MongoClient = require('mongodb').MongoClient;
 var path = require("path")
 const bodyParser = require('body-parser');
 const http = require('http');
